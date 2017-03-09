@@ -19,6 +19,7 @@ The goals / steps of this project are the following:
 [image4]: ./output_images/04_boxes_1.png
 [image5]: ./output_images/05_boxes_2.png
 [image6]: ./output_images/06_boxes_3.png
+[image6a]: ./output_images/06a_boxes_4.png
 [image7]: ./output_images/07_all_detections.png
 [image8]: ./output_images/08_heatmap.png
 [image9]: ./output_images/09_heatmap_threshold.png
@@ -134,15 +135,33 @@ The image below shows the first attempt at using `find_cars` on one of the test 
 
 ![alt text][image3]
 
-I explored several configurations of window sizes and positions, with various overlaps in the X and Y directions. The following threee images show the configurations of all search windows in the final implementation, for small, medium, and large windows:
+I explored several configurations of window sizes and positions, with various overlaps in the X and Y directions. The following four images show the configurations of all search windows in the final implementation, for small (1x), medium (1.5x, 2x), and large (3x) windows:
 
 ![alt text][image4]
 ![alt text][image5]
 ![alt text][image6]
+![alt text][image6a]
 
 The image below shows the rectangles returned by `find_cars` drawn onto one of the test images in the final implementation. Notice that there are several positive predictions on each of the near-field cars, and one (possible mistaken) prediction on a car in the oncoming lane.
 
 ![alt text][image7]
+
+Because a true positive is typically accompanied by several positive detections, while false positives are typically accompanied by only one or two detections, a combined heatmap and threshold is used to filter out false positives. The `add_heat` function increments the pixel value (referred to as "heat") of an all-black image the size of the original image at the location of each detection rectangle. Areas with more overlapping rectangles are assigned higher levels of heat. The following image is the resulting heatmap from the detections in the image above:
+
+![alt text][image8]
+
+A threshold is applied to the heatmap (in this example, with a value of 1), setting all pixels that don't exceed the threshold to zero. The result is below:
+
+![alt text][image9]
+
+ The `scipy.ndimage.measurements.label()` function collects spatially contiguous areas of the heatmap and assigns each a label:
+
+![alt text][image10]
+
+
+
+![alt text][image11]
+![alt text][image12]
 
 
 
